@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Link to add google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Link to add google icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+
+    <!-- Link to own CSS -->
+    <link rel="stylesheet" href="/css/index.css" />
+
+    <!-- favicon for the WebPage -->
+    <link rel="icon" type="image/png" href="/images/todo-favicon.png" />
+
+    <!-- Title of WebPage -->
+    <title><%= tittle %></title>
+  </head>
+  <body>
+    <div id="container">
+      <!-- Heading container -->
+      <div id="heading">
+        <h1>TODO App</h1>
+      </div>
+
+      <!-- Total Tasks Counter -->
+      <div id="tskCntFilt">
+        <div id="taskCount">
+          Total Tasks: &nbsp; <span><%= taskCount %></span>
+        </div>
+      </div>
+
+      <!-- User Input container -->
+      <form action="/create-task" method="POST" id="inpForm">
+        <hr />
+
+        <!-- ask the task to do -->
+        <div id="desc">
+          <label for="workDescription"> DESCRIPTION </label>
+          <input
+            type="text"
+            id="workDescription"
+            placeholder="What do you need to do?"
+            name="description"
+            required
+          />
+        </div>
+        <hr />
+
+        <!-- ask for its category to be selected from dropdown list -->
+        <div id="wrkType">
+          <label for="workType"> CATEGORY </label>
+          <select id="workType" name="category" required>
+            <option value="" selected="selected" disabled="disabled">
+              -- select one --
+            </option>
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="School">School</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- ask for the due date -->
+        <div id="dueDate">
+          <label for="finishDate"> DUE DATE </label>
+          <input type="date" id="finishDate" name="date" required />
+        </div>
+        <hr />
+
+        <!-- ask to submit the inputs -->
+        <button type="submit" id="add" value="ADD TASK">
+          <span class="material-symbols-outlined btn-symbol">add</span>
+          <span>ADD TASK</span>
+        </button>
+      </form>
+
+      <!-- container for printing task list -->
+      <div id="taskListContainer">
+        <!-- form for selecting the tasks to be deleted -->
+        <form action="/delete-task" method="GET">
+          <!-- Delete Button container to delete task -->
+          <div id="dlBtndiv">
+            <button type="submit" id="dlt" value="DELETE TASK">
+              <span class="material-symbols-outlined btn-symbol">delete</span>
+              <span>DELETE TASK</span>
+            </button>
+          </div>
+
+          <!-- Task List container -->
+          <div id="taskList">
+            <div class="gradient-container">
+              <!-- loop to print the tasks -->
+              <% for(let i of task) { %>
+              <hr />
+              <div class="tsk">
+                <input type="checkbox" name="<%= i._id %>" id="<%= i._id %>"
+                class="custom-checkbox" data-taskid="<%= i._id %>" <%=
+                i.isCompleted ? 'checked="checked"' : '' %> />
+                <label
+                  for="<%= i._id %>"
+                  class="task-description <%= i.isCompleted ? 'completed-task text-line-through' : '' %>"
+                  ><%= i.description %></label
+                >
+                <label
+                  for="<%= i._id %>"
+                  class="task-category"
+                  data-category="<%= i.category %>"
+                >
+                  <%= i.category %>
+                </label>
+                <label for="<%= i._id %>" class="due-date">
+                  <span class="calender-symbol material-symbols-outlined">
+                    calendar_month
+                  </span>
+                  <span><%= i.date %></span>
+                </label>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- add related js file -->
+    <script src="/js/script.js"></script>
+  </body>
+</html>
